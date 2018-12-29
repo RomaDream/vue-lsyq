@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<script src="js/vue.js"></script>
+	<style type="text/css">
+		li{width: 20px;height: 20px;background: red;margin-bottom: 10px;cursor: pointer;}
+	</style>
+	<body>
+		<div id="app">
+			<input type="text" v-model="message" />
+			<button @click="add">点击</button>
+			<p>{{message}}</p>
+		</div>
+		<ul>
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+		</ul>
+		<script type="text/jscript">
+			var lis=document.getElementsByTagName("li");
+			for(let i=0;i<lis.length;i++){
+				lis[i].onclick=function(){
+					console.log(i);
+				}
+			}
+			const a=0;
+			console.log(a);
+			var app = new Vue({
+				el: '#app',
+				data: {
+					message: 'Hello Vue!'
+				},
+				methods:{
+					add:()=>{
+						console.log(12346);
+					}
+				},
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>跑马灯效果</title>
+	</head>
+	<body>
+		<div id="app">
+			<h2>跑马灯效果</h2>
+			<ul>
+				<li>v-text运用：数据单向绑定，model-》view</li>
+				<li>v-on:(简写@)运用：事件绑定</li>
+				<li>setInterval定时器运用，clearInterval()：清除定时器</li>
+			</ul>
+			<hr/>
+			<input type="button" value="自己动" @click="move"/>
+			<input type="button" value="别动" @click="stop"/>
+			<p v-text="msg"></p>
+		</div>
+		
+		<script src="js/vue.js"></script>
+		<script>
+			var app = new Vue({
+				el:'#app',
+				data:{
+					msg : '~|~|~|~|~|~|',
+					intervalId: null
+				},
+				methods:{
+					move(){
+						if(this.intervalId!=null){
+							return;
+						}
+						this.intervalId = setInterval(()=>{
+							var start = this.msg.substring(0,1);
+							var end = this.msg.substring(1);
+							this.msg = end + start;	
+						},400)
+					},
+					stop(){
+						clearInterval(this.intervalId);
+						this.intervalId = null;
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

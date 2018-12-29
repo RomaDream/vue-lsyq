@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>vue-resource基本操作</title>
+	</head>
+	<body>
+		<h2>vue-resource运用</h2>
+		<ul>
+			<li>get请求：this.$http.get('url',{option})</li>
+			<li>设置根路径：Vue.http.options.root = 'http://www.xxx.com/'</li>
+		</ul>
+		<div id="app">
+			<input type="button" value="get请求" @click="get" />
+		</div>
+		
+		<script src="js/vue.js"></script>
+		<!-- vue-resource依赖vue -->
+		<script src="js/vue-resource-1.5.1.js"></script>
+		<script>
+			//设置全局根路径
+			Vue.http.options.root = 'http://www.lsyq.api/';
+			new Vue({
+				el:'#app',
+				data:{
+					
+				},
+				methods:{
+					get(){
+						this.$http.get('get',{}).then(response=>{
+								console.log(response);
+							})
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

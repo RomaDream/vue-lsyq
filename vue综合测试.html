@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>vue综合测试</title>
+	</head>
+	<style>
+		#app{
+			margin: 10px auto;
+			width: 300px;
+		}
+	</style>
+	<script src="js/vue.js"></script>
+	<script src="js/axios.min.js"></script>
+	<body>
+		<div id="app">
+			<div>
+				姓名：<input type="text" placeholder="请输入姓名" v-model="newStudent.name"/>
+			</div>
+			<div>
+				年龄：<input type="text" placeholder="请输入年龄" v-model="newStudent.age"/>
+			</div>
+			<div>
+				性别：<select v-model="newStudent.sex">
+					<option value="男" selected="selected">男</option>
+					<option value="女">女</option>
+				</select>
+			</div>
+			<div>
+				电话：<input type="text" placeholder="请输入电话" v-model="newStudent.phone"/>
+			</div>
+			<div>
+				<button @click="creatNeStuden()">创建用户</button>
+			</div>
+			<table>
+				<thead>
+					<tr>
+						<td>姓名</td>
+						<td>年龄</td>
+						<td>性别</td>
+						<td>电话</td>
+						<td>删除</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(person,index) in persons">
+						<td>{{person.name}}</td>
+						<td>{{person.age}}</td>
+						<td>{{person.sex}}</td>
+						<td>{{person.phone}}</td>
+						<td>
+							<button @click="mounted()">删除</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<script>
+			new Vue({
+				el:'#app',
+				data:{
+					persons:[
+						{name:'张三', age:30, sex:'男',phone:'111111'},
+						{name:'李四', age:40, sex:'男',phone:'111111'},
+						{name:'王五', age:50, sex:'男',phone:'111111'},
+						{name:'赵柳', age:10, sex:'男',phone:'111111'}
+					],
+					newStudent:{name:'', age:0, sex:'男',phone:''}
+				},
+				methods:{
+					//创建一个新用户
+					creatNeStuden(){
+						if(this.newStudent.name === ''){
+							alert('姓名不能为空');
+							return false;
+						}
+						if(this.newStudent.age<=0){
+							alert('请输入合法的年龄');
+							return false;
+						}
+						if(this.newStudent.phone === ''){
+							alert('手机号不能为空');
+							return false;
+						}
+						
+						//将新用户存入数组中
+						this.persons.unshift(this.newStudent);
+						
+						//初始化一个用户
+						this.newStudent = {name:'', age:0, sex:'男',phone:''};
+					},
+					
+					//删除选中的用户
+					deleteStudentByIndex(index){
+						this.persons.splice(index,1);
+					},
+					
+					mounted(){
+						 axios({
+							method:'get',
+							url:'http://127.0.0.1:8888/gril/find/2',
+							dataType:'jsonp',
+							headers:{
+								'Content-Type': 'application/json;charset=UTF-8'
+							}
+						 })
+						 .then(function(response){
+							 console.log(response);
+						 })
+						 .catch(function(error){
+							 console.log(error);
+						 })
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

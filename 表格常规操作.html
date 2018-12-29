@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>关键字搜索</title>
+	
+		<style>
+			[v-cloak] {
+			display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>表格的一些基本操作</h2>
+		<span style="color: red;">HBuildX中自带的浏览器不支持ES6中的padStart()方法，可以用Chrome[版本 71.0.3578.98（正式版本） （64 位）]浏览器打开查看效果</span>
+		<ul>
+			<li>关键字搜索： v-model双向数据绑定运用、v-for数组遍历运用、Vue.filter过滤器的运用</li>
+			<li>添加行：@click事件绑定、@keyup按键修饰符</li>
+			<li>@v-cloak运用：防止网速慢的时候直接展示插值表达式</li>
+			<li>自定义过滤器：Vue.filter('name',function(){})</li>
+			<li>自定义指令：Vue.directive('name',{methods})</li>
+		</ul>
+		<hr/>
+		<div id='app'>
+			id:<input type="text" v-model="id"/>
+			Name:<input type="text" v-model="name" @keyup.enter="add"/>
+			<input type="button" value="添加" @click="add" />
+			关键字搜索<input type="text" v-model="keyword" v-focus/>
+			<table>
+				<thead>
+					<tr>
+						<td>Id</td>
+						<td>Name</td>
+						<td>Ctime</td>
+						<td>Option</td>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- v-for遍历数组 -->
+					<!-- 将关键字作为参数传入search方法中，返回一个新的数组 -->
+					<tr v-for="(item,index) in search(keyword)">
+						<td v-cloak>{{ item.id }}</td>
+						<td v-cloak>{{ item.name }}</td>
+						<td v-cloak>{{ item.ctime | formatDateFileter }}</td>
+						<td><input type="button" value="删除" @click="del(index)"/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<script src="js/vue.js"></script>
+		
+		<script>
+			//定义一个全局过滤器,返回格式化后的时间
+			Vue.filter('formatDateFileter',function(ctime){
+				var y = ctime.getFullYear().toString();
+				var m = (ctime.getMonth() + 1).toString().padStart(2,'0');
+				var d = ctime.getDate().toString().padStart(2,'0');
+				return `${y}-${m}-${d}`;
+			})
+			
+			//使用Vue.ditrctive()自定义指令
+			//参数1:指令名称,调用指令时,必须要加v-前缀
+			//参数2:对象,指令相关的函数
+			//参考文档 https://cn.vuejs.org/v2/guide/custom-directive.html
+			// 注册一个全局自定义指令 `v-focus`
+			Vue.directive('focus', {
+// 				binding: function(el){
+// 					el.focus();
+// 				},
+			  // 当被绑定的元素插入到 DOM 中时,执行这个方法
+			  inserted: function (el) {
+				// 聚焦元素
+				el.focus();
+			  }
+			})
+			
+			var app = new Vue({
+				el:'#app',
+				data:{
+					keyword:'',
+					list:[
+						{id:1,name:'宝马',ctime:new Date()},
+						{id:2,name:'奔驰',ctime:new Date()},
+						{id:3,name:'大众',ctime:new Date()}
+					],
+					id:'',
+					name:''
+				},
+				methods:{
+					search(keyword){
+						var newList = [];
+						this.list.forEach(item=>{
+							if(item.name.indexOf(keyword.trim())!=-1 || keyword.trim()==''){ //判断名称中是否包关键字,考虑键入空格的情况
+								newList.push(item); //数组的添加方法 push()
+							}
+						})
+						return newList;
+					},
+					add(){
+						var item = {id:this.id,name:this.name,ctime:new Date()};
+						this.list.push(item)
+					},
+					del(index){
+						this.list.splice(index,1);//从索引index位置开始删除,删除一条记录
+					}
+					
+				},
+				//私有过滤器
+// 				filters:{
+// 					filterName:function(data,param){
+//	               		 // TUDO
+//                  }
+// 				}
+			})
+			
+		</script>
+	</body>
+</html>

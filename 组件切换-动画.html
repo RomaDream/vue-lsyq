@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title>组件注册-动画切换</title>
+		<style>
+			.v-enter,
+			.v-leave-to {
+				opacity: 0;
+				transform: translateX(150px);
+			}
+			
+			.v-enter-active,
+			.v-leave-active {
+				transition: all 0.5s ease;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>组件注册-动画切换</h2>
+		<ul>
+			<li>component 占位符 :is属性绑定组件名称，通过改变组件名称切换组件</li>
+			<li>
+				动画效果
+				<ul>
+					<li>1、使用transition标签</li>
+					<li>2、使用<br/>
+							.v-enter,<br/>
+							.v-leave-to {<br/>
+								opacity: 0;<br/>
+								transform: translateX(150px);<br/>
+							}
+							<br/><br/>
+							.v-enter-active,<br/>
+							.v-leave-active {<br/>
+								transition: all 0.5s ease;<br/>
+							}<br/>
+							实现动画切换效果
+					</li>
+					<li>3、使用mode模式实现进出无交集</li>
+				</ul>
+			</li>
+		</ul>
+		<hr/>
+		<div id='app'>
+			<a href="" @click.prevent="componentName='login'">登录</a>
+			<a href="" @click.prevent="componentName='register'">注册</a>
+			
+			<!-- component 一个占位符 :is 组件的名称 展示组件 -->
+			<!-- 1、使用transition标签包裹组件 -->
+			<!-- 使用mode模式out-in实现进入无交集 -->
+			<transition mode='out-in'>
+				<component :is="componentName"></component>
+			</transition>
+		</div>
+		<script src='js/vue.js'></script>
+		<script>
+			Vue.component('login',{
+				template:'<h3>登录组件</h3>'
+			})
+			
+			Vue.component('register',{
+				template:'<h3>注册组件</h3>'
+			})
+			new Vue({
+				el:'#app',
+				data:{
+					componentName:'login'
+				}
+			})
+		</script>
+		</body>
+</html>

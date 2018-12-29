@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8'>
+		<title></title>
+	</head>
+	<body>
+		<h2>组件中的数据</h2>
+		<ul>
+			<li>组件中的数据必须是一个方法,data:function(){},并且返回值是一个对象：return{}</li>
+		</ul>
+		<hr/>
+		<div id='app'>
+			<mycompent></mycompent>
+		</div>
+		
+		<template id="temp">
+			<h1>这是一个H1{{msg}}标签</h1>
+		</template>
+		<script src='js/vue.js'></script>
+		<script>
+			Vue.component('mycompent',{
+				template:'#temp',
+				//组件中的数据必须是一个function(){},返回的是一个对象return {};
+				data:function(){
+					return {
+						//这是组件中定义的数据
+						msg:'abc'
+					};
+				}
+			})
+			new Vue({
+				el:'#app',
+				data:{
+					msg:'abc'
+				}
+			})
+		</script>
+		</body>
+</html>
